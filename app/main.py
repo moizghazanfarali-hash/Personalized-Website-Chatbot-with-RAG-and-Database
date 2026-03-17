@@ -24,4 +24,4 @@ app.include_router(chat_router)
 
 @app.get("/health", tags=["System"])
 def health():
-    return {"status": "ok", "message": "Isky RAG API chal rahi hai ✅"}
+    return {"status": "ok", "message": "Isky RAG ApI chal rahi hai "}
