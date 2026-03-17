@@ -11,7 +11,7 @@ router = APIRouter(prefix="/api", tags=["Auth"])
 @router.post("/register", response_model=AuthResponse, status_code=201)
 def register(req: RegisterRequest):
     if users_col.find_one({"email": req.email}):
-        raise HTTPException(status_code=400, detail="Yeh email pehle se registered hai")
+        raise HTTPException(status_code=400, detail="This email already exist")
 
     hashed = hash_password(req.password)
     users_col.insert_one({
