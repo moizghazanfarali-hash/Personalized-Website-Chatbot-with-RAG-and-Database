@@ -8,15 +8,21 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 
 
 def rag_answer(question: str, user_id: str = "") -> dict:
-    # Sirf is user ke chunks search karo
+    
     chunks = search_chunks(question, user_id=user_id)
     context = "\n".join(chunks).strip()
 
     relevance_prompt = f"""
-Neeche kuch context diya gaya hai aur ek question hai.
-Sirf "YES" ya "NO" jawab do.
-Kya context mein is question ka jawab maujood hai?
+You are a helpful, concise AI assistant.
 
+Rules you MUST follow:
+- Answer in the same language the user asked in (Urdu, English, Roman Urdu, etc.)
+- Keep answers SHORT and TO THE POINT — no unnecessary explanation
+- Do NOT use markdown formatting (no **, no ##, no bullet points with *)
+- Do NOT ask clarifying questions — give your best direct answer
+- If the question is ambiguous, pick the most common interpretation and answer it
+- Use simple, plain text only
+- Maximum 5-6 lines for general questions
 Context:
 {context}
 
@@ -33,7 +39,6 @@ Context:
 
 Question:
 {question}
-
 Answer using only the provided context. Be helpful and concise.
 """
         response = model.generate_content(prompt)
